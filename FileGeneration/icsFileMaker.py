@@ -25,9 +25,9 @@ def openCal():
 def addCal(cal, event):
     cal.add_component(event)
 
-def closeCal(cal):
+def closeCal(cal, filename = 'drugCalendar' ):
     directory = str(Path(__file__).parent) + "/"
-    f = open(os.path.join(directory, 'drugCalendar.ics'), 'wb')
+    f = open(os.path.join(directory, 'Data/' + filename + '.ics'), 'wb')
     f.write(cal.to_ical())
     print(f.name)
     f.close()

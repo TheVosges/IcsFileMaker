@@ -2,7 +2,7 @@ from pathlib import Path
 import csv
 from datetime import date
 import datetime
-import icsFileMaker
+from FileGeneration import icsFileMaker
 
 BEGIN = 'VCALENDAR'
 VERSION = '2.0'
@@ -12,7 +12,7 @@ X_WR_CALNAME = 'IcsFileMaker'
 X_WR_TIMEZONE = 'Europe/Warsaw'
 TZID = 'Europe/Warsaw'
 
-data_filename = 'data.csv'
+data_filename = 'output.csv'
 
 
 def convertDate(test_date):
@@ -58,28 +58,31 @@ def getTime(time):
     minute = int(minute)
     return hour, minute
 
+def createIcsFile(filename = 'drugCalendar' ,data_filename = "output.csv"):
+    data = openFile(data_filename)
+    cal = icsFileMaker.openCal()
+    for row in data:
+        summary = row[0]
+        description = row[1]
+        okres_od = row[2]
+        okres_do = row[3]
+        godzina = row[4]
+
+        year_od, month_od, day_od = convertDate(okres_od)
+        year_do, month_do, day_do = convertDate(okres_do)
+
+        d0 = date(year_od, month_od, day_od)
+        d1 = date(year_do, month_do, day_do)
+
+        i = 0
+        while d0 != (d1 + datetime.timedelta(days=1)):
+            hour, minute = getTime(godzina)
+            event = icsFileMaker.addEvent(summary, description, int(d0.strftime("%Y")), int(d0.strftime("%m")),
+                                          int(d0.strftime("%d")), hour, minute)
+            icsFileMaker.addCal(cal, event)
+            d0 = d0 + datetime.timedelta(days=1)
+    icsFileMaker.closeCal(cal, filename = filename)
 
 
-data = openFile(data_filename)
-cal = icsFileMaker.openCal()
-for row in data:
-    summary = row[0]
-    description = row[1]
-    okres_od = row[2]
-    okres_do = row[3]
-    godzina = row[4]
-
-    year_od, month_od, day_od = convertDate(okres_od)
-    year_do, month_do, day_do = convertDate(okres_do)
-
-    d0 = date(year_od, month_od, day_od)
-    d1 = date(year_do, month_do, day_do)
-
-    i = 0
-    while d0 != (d1 + datetime.timedelta(days=1)):
-        hour, minute = getTime(godzina)
-        event = icsFileMaker.addEvent(summary, description, int(d0.strftime("%Y")), int(d0.strftime("%m")),
-                                      int(d0.strftime("%d")), hour, minute)
-        icsFileMaker.addCal(cal, event)
-        d0 = d0 + datetime.timedelta(days=1)
-icsFileMaker.closeCal(cal)
+if __name__ == "__main__":
+    createIcsFile(data_filename)
