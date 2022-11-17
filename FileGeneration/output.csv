@@ -1,3 +1,10 @@
+<<<<<<< HEAD
 Drug name;Dose desc.;Date from;Date to;Drug intake time
 Laroaks;2.5 tabl. (2.5 mg);29.10.2021;31.10.2021;12:00:00
 Derundahl;1 tabl. (10mg);01.11.2021;14.11.2021;19:00:00
+=======
+Drug name;Dose desc.;Date from;Date to;Drug intake time
+Laroaks;2.5 tabl. (2.5 mg);29.10.2021;31.10.2021;12:00:00
+Derundahl;1 tabl. (10mg);01.11.2021;14.11.2021;19:00:00
+Paracetamol;1 tabsa;20.10.2022;25.10.2022;19:00:00
+>>>>>>> devWera
